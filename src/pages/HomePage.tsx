@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
+import ShoppingListMinimal from "../components/ShoppingListMinimal";
 
 export default function HomePage() {
 
@@ -7,7 +8,7 @@ export default function HomePage() {
         <div>
             <Header title="HomePage"/>
             <Navigation currentPage="HomePage"/>
-            // My Contents for home page
+            <ShoppingListMinimal/>
         </div>
     );
 }

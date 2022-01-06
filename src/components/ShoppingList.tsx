@@ -62,7 +62,7 @@ export default function ShoppingList(){
         <article className="article">
             <div>
                 {items.map( (item) => (
-                    <ItemCard item={item} onUpdateItemCount={updateItemCount} onRemoveItem={()=>removeItem(item)}/>
+                    <ItemCard item={item} onUpdateItemCount={updateItemCount} onRemoveItem={removeItem}/>
                 ))}
             </div>
 
