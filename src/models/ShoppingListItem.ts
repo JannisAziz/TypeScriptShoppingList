@@ -1,1 +1,6 @@
-export default interface ShoppingListItem {id: string, name: string, count?: number}
+export default interface ShoppingListItem {
+    id: string,
+    name: string,
+    count?: number
+    isDone: boolean
+}

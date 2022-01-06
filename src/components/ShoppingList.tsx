@@ -1,6 +1,7 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {v4 as uuidv4} from "uuid";
 import ShoppingListItem from "../models/ShoppingListItem";
+import ItemCard from "./ItemCard";
 
 export default function ShoppingList(){
 
@@ -10,7 +11,7 @@ export default function ShoppingList(){
     }
 
     const ITEM_LIST_KEY = "ITEM_STORE"
-    const [items, setItems] = useState<ShoppingListItem[]>(JSON.parse(localStorage.getItem(ITEM_LIST_KEY) as string) || [])
+    const [items, setItems] = useState<ShoppingListItem[]>(JSON.parse(localStorage.getItem(ITEM_LIST_KEY) || "[]"))
 
     useEffect(() => {
         localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(items));
@@ -19,17 +20,22 @@ export default function ShoppingList(){
     const addNewItem = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const newItem: ShoppingListItem = {
-            id: uuidv4(),
-            name: userInput
+        // _Todo: Validate user input with more functionality (eg: Capitalization of letters)
+
+        if (items.find( item => item.name === userInput) === undefined && userInput.trim().length !== 0) { //trim() cuts whitespace from start and end of string ## Remember the 2 hour incident ( === !== )##
+            const newItem: ShoppingListItem = {
+                id: uuidv4(),
+                name: userInput,
+                isDone: false
+            }
+
+            setItems( [...items, newItem] )
+
+            setUserInput('')
         }
-
-        setItems( [...items, newItem] )
-
-        setUserInput('')
     }
-    const removeItem = (id: string) => {
-        setItems(items.filter(item => item.id !== id))
+    const removeItem = (itemToRemove: ShoppingListItem) => {
+        setItems(items.filter(item => item !== itemToRemove))
     }
 
     //DONT NEED THIS?!
@@ -38,39 +44,33 @@ export default function ShoppingList(){
     }
 
     const updateItemCount = (itemToChange: ShoppingListItem, newCount: number) => {
-        const tmpItems = [...items]
+        const newItems = [...items]
 
-        const itemIndex = tmpItems.findIndex(item => item === itemToChange)
+        const itemIndex = newItems.findIndex(item => item === itemToChange)
 
-        tmpItems.filter( item => item !== itemToChange)
+        newItems.filter( item => item !== itemToChange)
 
-        tmpItems[itemIndex] = {
-            ...tmpItems[itemIndex],
+        newItems[itemIndex] = {
+            ...newItems[itemIndex],
             count: newCount
         }
 
-        setItems(tmpItems)
+        setItems(newItems)
     }
 
     return (
         <article className="article">
-            <ul>
-                {items.map( (item, id) => (
-                    <li key={id}>
-                        {item.name} x
-                        <input type="number" value={item.count || 1} onChange={(e) => updateItemCount(item, e.target.value as unknown as number)} />
-                        <button onClick={()=>{removeItem(item.id)}}>Remove</button>
-                    </li>
+            <div>
+                {items.map( (item) => (
+                    <ItemCard item={item} onUpdateItemCount={updateItemCount} onRemoveItem={()=>removeItem(item)}/>
                 ))}
-            </ul>
+            </div>
 
             <form onSubmit={addNewItem}>
                 <input value={userInput} onChange={updateInput} placeholder="new item here" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+                {/*<input type="number" value={1} />*/}
                 <button type="submit">ADD</button>
             </form>
         </article>
     )
 }
-
-
-
