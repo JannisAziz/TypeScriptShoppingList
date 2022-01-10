@@ -2,8 +2,16 @@ import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {v4 as uuidv4} from "uuid";
 import ShoppingListItem from "../models/ShoppingListItem";
 import ItemCard from "./ItemCard";
+import "../styles/CustomStyles.scss"
+
 
 export default function ShoppingList(){
+
+    //todo: scss
+    // button hover 0.5 hrs
+    // light, darkmode (dynamic percentage) 1.5 hrs
+    // layout :(( 3 hrs
+
 
     const [userInput, setUserInput] = useState('')
     const updateInput = (inputEvent: ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +48,12 @@ export default function ShoppingList(){
 
     //DONT NEED THIS?!
     const getItemCount = (currentItem: ShoppingListItem) => {
-         return items.filter( item => item === currentItem )[0].count || 1
+        return items.filter( item => item === currentItem )[0].count || 1
     }
 
     const updateItemCount = (itemToChange: ShoppingListItem, newCount: number) => {
+        if (newCount < 1) return;
+
         const newItems = [...items]
 
         const itemIndex = newItems.findIndex(item => item === itemToChange)
@@ -60,17 +70,17 @@ export default function ShoppingList(){
 
     return (
         <article className="article">
+            <form className="addItemField" onSubmit={addNewItem}>
+                <input value={userInput} onChange={updateInput} placeholder="new item here" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
+                {/*<input type="number" value={1} />*/}
+                <button type="submit">+</button>
+            </form>
+
             <div>
                 {items.map( (item) => (
                     <ItemCard item={item} onUpdateItemCount={updateItemCount} onRemoveItem={removeItem}/>
                 ))}
             </div>
-
-            <form onSubmit={addNewItem}>
-                <input value={userInput} onChange={updateInput} placeholder="new item here" autoCorrect="off" autoCapitalize="off" spellCheck="false" />
-                {/*<input type="number" value={1} />*/}
-                <button type="submit">ADD</button>
-            </form>
         </article>
     )
 }

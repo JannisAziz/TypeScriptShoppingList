@@ -20,12 +20,12 @@ export default function ShoppingListMinimal(){
 
         const itemIndex = newItems.findIndex(item => item === itemToChange)
 
-        newItems.filter( item => item !== itemToChange)
+        newItems[itemIndex].isDone = !newItems[itemIndex].isDone
 
-        newItems[itemIndex] = {
+        /*newItems[itemIndex] = {
             ...newItems[itemIndex],
             isDone: !newItems[itemIndex].isDone
-        }
+        }*/
 
         setItems(newItems)
     }

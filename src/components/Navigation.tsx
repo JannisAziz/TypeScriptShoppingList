@@ -1,5 +1,6 @@
-import "./Navigation.css"
 import {Link} from "react-router-dom";
+import "../styles/CustomStyles.scss"
+
 
 export default function Navigation (props: { currentPage: string }){
     return (

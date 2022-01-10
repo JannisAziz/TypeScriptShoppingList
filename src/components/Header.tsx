@@ -1,4 +1,4 @@
-import "./Header.css"
+import "../styles/CustomStyles.scss"
 
 export default function Header (props: { title: string } ){
 
