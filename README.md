@@ -1,3 +1,3 @@
 ### TypeScriptShoppingList
 
-Repository for testing basic ReactJS functionality
+Repository for testing basic ReactJS & Typescript functionality
